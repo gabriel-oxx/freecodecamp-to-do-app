@@ -1,4 +1,5 @@
 const taskForm = document.getElementById("task-form");
+const todoContainer = document.getElementById("todo-container");
 const confirmCloseDialog = document.getElementById("confirm-close-dialog");
 const openTaskFormBtn = document.getElementById("open-task-form-btn");
 const closeTaskFormBtn = document.getElementById("close-task-form-btn");
@@ -20,7 +21,11 @@ closeTaskFormBtn.addEventListener("click", () => {
   confirmCloseDialog.showModal();
 });
 
-cancelBtn.addEventListener("click", ()=>{
-confirmCloseDialog.close();
+cancelBtn.addEventListener("click", () => {
+  confirmCloseDialog.close();
 });
 
+discardBtn.addEventListener("click", () => {
+  confirmCloseDialog.close();
+  taskForm.classList.toggle("hidden");
+});
