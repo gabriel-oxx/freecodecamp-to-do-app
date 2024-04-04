@@ -19,6 +19,15 @@ openTaskFormBtn.addEventListener("click", () => {
 
 closeTaskFormBtn.addEventListener("click", () => {
   confirmCloseDialog.showModal();
+
+  const formInputsContainValues =
+    titleInput.value || dateInput.value || descriptionInput.value;
+
+  if (formInputsContainValues) {
+    confirmCloseDialog.showModal();
+  } else {
+    reset();
+  }
 });
 
 cancelBtn.addEventListener("click", () => {
@@ -38,8 +47,7 @@ const reset = () => {
   taskForm.classList.toggle("hidden");
 };
 
-taskForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+const addOrUpdateTask = () => {
   const dataArrIndex = taskData.findIndex((item) => {
     item.id === currentTask.id;
   });
@@ -54,20 +62,24 @@ taskForm.addEventListener("submit", (e) => {
   if (dataArrIndex === -1) {
     taskData.unshift(taskObj);
   }
+};
 
+const updateTaskContainer = () => {
   taskData.forEach(({ id, title, date, description }) => {
     tasksContainer.innerHTML += `
-    <div class="task" id="${id}">
-    <p><strong>Title:</strong> ${title}</p>
-    <p><strong>Date:</strong> ${date}</p>
-    <p><strong>Description:</strong> ${description}</p>
-    <button type="button" class="btn">Edit</button>
-    <button type="button" class="btn">Delete</button>
-    </div>
-    `;
-reset();
-
+		<div class="task" id="${id}">
+		<p><strong>Title:</strong> ${title}</p>
+		<p><strong>Date:</strong> ${date}</p>
+		<p><strong>Description:</strong> ${description}</p>
+		<button type="button" class="btn">Edit</button>
+		<button type="button" class="btn">Delete</button>
+		</div>
+		`;
   });
-});
+};
 
-console.log(taskData);
+taskForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  reset();
+});
