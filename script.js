@@ -22,8 +22,11 @@ closeTaskFormBtn.addEventListener("click", () => {
 
   const formInputsContainValues =
     titleInput.value || dateInput.value || descriptionInput.value;
-
-  if (formInputsContainValues) {
+    const formInputValuesUpdated =
+    titleInput.value !== currentTask.title ||
+    dateInput.value !== currentTask.date ||
+    descriptionInput.value !== currentTask.description;
+  if (formInputsContainValues && formInputValuesUpdated) {
     confirmCloseDialog.showModal();
   } else {
     reset();
@@ -48,6 +51,7 @@ const reset = () => {
 };
 
 const addOrUpdateTask = () => {
+  addOrUpdateTaskBtn.innerText = "Add Task";
   const dataArrIndex = taskData.findIndex((item) => {
     item.id === currentTask.id;
   });
@@ -61,6 +65,8 @@ const addOrUpdateTask = () => {
 
   if (dataArrIndex === -1) {
     taskData.unshift(taskObj);
+  } else {
+    taskData[dataArrIndex] = taskObj;
   }
 
   updateTaskContainer();
@@ -68,9 +74,23 @@ const addOrUpdateTask = () => {
 };
 
 const deleteTask = (buttonEl) => {
-  const dataArrIndex = taskData.findIndex((item) => item.id === buttonEl.parentElement.id);
+  const dataArrIndex = taskData.findIndex(
+    (item) => item.id === buttonEl.parentElement.id
+  );
   taskData.splice(dataArrIndex, 1);
   buttonEl.parentElement.remove();
+};
+
+const editTask = (buttonEl) => {
+  const dataArrIndex = taskData.findIndex(
+    (item) => item.id === buttonEl.parentElement.id
+  );
+  currentTask = taskData[dataArrIndex];
+  titleInput.value = currentTask.title;
+  dateInput.value = currentTask.date;
+  descriptionInput.value = currentTask.description;
+  addOrUpdateTaskBtn.innerText = "Update Task";
+  taskForm.classList.toggle("hidden");
 };
 
 const updateTaskContainer = () => {
